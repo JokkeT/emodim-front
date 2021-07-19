@@ -15,6 +15,17 @@ export class MessageArea extends Component {
         return (
             <div className="message-area">
                 <div className="thread-start">
+                    {
+                        annotations
+                            ?
+                            <AnnotatedMessage
+                                data={this.props.startMessage}
+                            />
+                            :
+                            <Message
+                                data={this.props.startMessage}
+                            />
+                    }
                     <Message
                         data={this.props.startMessage}
                     />
