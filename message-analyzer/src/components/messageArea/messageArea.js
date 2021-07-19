@@ -26,9 +26,6 @@ export class MessageArea extends Component {
                                 data={this.props.startMessage}
                             />
                     }
-                    <Message
-                        data={this.props.startMessage}
-                    />
                 </div>
                 <div className="response-section">
                     <ResponseField />

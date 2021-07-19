@@ -28,6 +28,7 @@
   "scripts": {
     "start": "react-scripts start",
     "start-ann": "set \"REACT_APP_ANNOTATIONS=true\" && set \"PORT=3001\" && react-scripts start",
+    "start-ann-docker": "export REACT_APP_ANNOTATIONS=true && export PORT=3001 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

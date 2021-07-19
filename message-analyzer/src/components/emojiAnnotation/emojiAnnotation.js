@@ -1,5 +1,4 @@
 import React from "react";
-import _ from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngry, faLaugh, faMeh } from "@fortawesome/free-solid-svg-icons";
 import "./emojiAnnotation.css"
