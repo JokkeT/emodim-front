@@ -141,7 +141,7 @@ const ResponseAnalysisDialog = () => {
                     <Button autoFocus onClick={handleClose} color="secondary">
                         Cancel
                     </Button>
-                    <Button autoFocus onClick={handleSend} color="primary">
+                    <Button autoFocus onClick={handleSend} color="primary" disabled={isWaitingForAnalysis}>
                         Send
                     </Button>
                 </MuiDialogActions>
