@@ -10,21 +10,24 @@ import { annotations } from "../../constants";
 
 export class MessageArea extends Component {
 
-
     render() {
         return (
             <div className="message-area">
                 <div className="thread-start">
                     {
-                        annotations
+                        this.props.startMessage.commentMetadata
                             ?
-                            <AnnotatedMessage
-                                data={this.props.startMessage}
-                            />
+                            annotations
+                                ?
+                                <AnnotatedMessage
+                                    data={this.props.startMessage}
+                                />
+                                :
+                                <Message
+                                    data={this.props.startMessage}
+                                />
                             :
-                            <Message
-                                data={this.props.startMessage}
-                            />
+                            null
                     }
                 </div>
                 <div className="response-section">
@@ -34,16 +37,20 @@ export class MessageArea extends Component {
                 <div className="comments">
                     {
                         this.props.comments && this.props.comments.map(comment => {
-                            if (annotations) {
-                                return <AnnotatedMessage
-                                    data={comment}
-                                    key={comment.commentMetadata.id}
-                                />
+                            if (comment && comment.commentMetadata) {
+                                if (annotations) {
+                                    return <AnnotatedMessage
+                                        data={comment}
+                                        key={comment.commentMetadata.id}
+                                    />
+                                } else {
+                                    return < Message
+                                        data={comment}
+                                        key={comment.commentMetadata.id}
+                                    />
+                                }
                             } else {
-                                return < Message
-                                    data={comment}
-                                    key={comment.commentMetadata.id}
-                                />
+                                return null;
                             }
                         })
                     }

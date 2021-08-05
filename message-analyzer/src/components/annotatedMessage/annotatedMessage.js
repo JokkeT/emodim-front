@@ -4,80 +4,109 @@ import AnnotatedWord from "../annotatedWord/annotatedWord";
 import EmojiAnnotation from "../emojiAnnotation/emojiAnnotation";
 import "./annotatedMessage.css";
 
+import { messageFeedbackStrings as feedback } from "../../constants";
+
 const AnnotatedMessage = ({ data, response }) => {
 
-    if (data && data.commentMetadata) {
+    const { author, datetime } = data.commentMetadata;
+    const words = data.words;
+    const hasChildren = data.children && !_.isEmpty(data.children);
+    let analysisMessage = null;
+    let messageValence = 0;
+    const sentenceValences = {
+        negative: 0,
+        neutral: 0,
+        positive: 0
+    }
 
-        const {
-            author,
-            datetime
-        } = data.commentMetadata;
+    const message = _.map(words, (wordData, index) => {
+        return <AnnotatedWord key={index} wordData={wordData} annotations />
+    });
 
-        const words = data.words;
-        const message = _.map(words, (wordData, index) => {
-            return <AnnotatedWord key={index} wordData={wordData} annotations />
-        });
+    const findHighestPredictionIndex = predictionArray => {
 
-        const hasChildren = data.children && !_.isEmpty(data.children);
-        let lowValenceCount = 0;
-        let highValenceCount = 0;
-        let messageValence;
-        let analysisMessage;
+        let highestPrediction = 0;
+        let indexOfHighestPrediction = -1;
 
-        for (const word of data.words) {
-            if (word.valence > 0.75) {
-                highValenceCount++;
-            } else if (word.valence < -0.75) {
-                lowValenceCount++;
+        for (let i = 0; i < predictionArray.length; i++) {
+            const roundedprediction = Math.round(predictionArray[i] * 100);
+            if (roundedprediction > highestPrediction) {
+                highestPrediction = roundedprediction;
+                indexOfHighestPrediction = i;
             }
         }
-
-        if (lowValenceCount / words.length > 0.05) {
-            messageValence = -1;
-            analysisMessage = "Tästä viestistä on tunnistettu negatiivisia tunteita.";
-        } else if (highValenceCount / words.length > 0.1) {
-            messageValence = 1;
-            analysisMessage = "Tästä viestistä on tunnistettu positiivisia tunteita.";
-        } else {
-            messageValence = 0;
-            analysisMessage = "Viestin tunnesisältö on neutraali.";
-        }
-
-        return (
-            <div className={`message-box${response ? " response" : ""}`}>
-                <div className="metadata">
-                    <div className="author">
-                        {author}
-                    </div>
-                    <div className="date">
-                        {datetime}
-                    </div>
-                </div>
-                <div className={`analysis-message message-valence${messageValence}`}>
-                    {analysisMessage}
-                </div>
-                <div className="content">
-                    <div className="message" key={data.commentMetadata.id}>
-                        {message}
-                    </div>
-                    <EmojiAnnotation
-                        messageValence={messageValence}
-                    />
-                </div>
-                {
-                    hasChildren && data.children.map(child => {
-                        return < AnnotatedMessage
-                            data={child}
-                            key={child.commentMetadata.id}
-                            response
-                        />
-                    })
-                }
-            </div>
-        );
+        return indexOfHighestPrediction;
     }
-    return null;
 
+    const increaseValenceCounters = (index) => {
+        if (index === 0) {
+            sentenceValences.negative++;
+        } else if (index === 1) {
+            sentenceValences.neutral++;
+        } else if (index === 2) {
+            sentenceValences.positive++;
+        }
+    }
+
+    const interpretValencePredictionData = () => {
+        if (data.sentenceValencePredictions) {
+            const messagePredictions = data.sentenceValencePredictions;
+            for (let sentencePredictionArray of messagePredictions) {
+                const indexOfHighestPrediction = findHighestPredictionIndex(sentencePredictionArray)
+                increaseValenceCounters(indexOfHighestPrediction);
+            }
+        }
+    }
+
+    const setFeedback = () => {
+        messageValence = sentenceValences.positive - sentenceValences.negative;
+        if (messageValence < 0) {
+            analysisMessage = feedback.negative;
+        } else if (messageValence === 0) {
+            analysisMessage = feedback.neutral;
+        } else if (messageValence > 0) {
+            analysisMessage = feedback.positive;
+        }
+    }
+
+    const handleValencePredictions = () => {
+        interpretValencePredictionData();
+        setFeedback()
+    }
+
+    handleValencePredictions()
+
+    return (
+        <div className={`message-box${response ? " response" : ""}`}>
+            <div className="metadata">
+                <div className="author">
+                    {author}
+                </div>
+                <div className="date">
+                    {datetime}
+                </div>
+            </div>
+            <div className={`analysis-message message-valence${messageValence}`}>
+                {analysisMessage}
+            </div>
+            <div className="content">
+                <div className="message" key={data.commentMetadata.id}>
+                    {message}
+                </div>
+                <EmojiAnnotation
+                    messageValence={messageValence}
+                />
+            </div>
+            {
+                hasChildren && data.children.map(child => {
+                    return < AnnotatedMessage
+                        data={child}
+                        key={child.commentMetadata.id}
+                        response
+                    />
+                })
+            }
+        </div>
+    );
 }
-
 export default AnnotatedMessage;
