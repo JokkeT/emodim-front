@@ -4,12 +4,10 @@ import _ from "lodash";
 import {
     updateAvailableRawThreads,
     updateCurrentRawThread,
-    updateCurrentRawThreadIndex
 } from "../../actions/rawDataActions";
 import { updateCurrentThread } from "../../actions/threadActions";
 import json from "../../testData/threadData_s24_04.json";
 import Thread from "../thread/thread";
-import ThreadChanger from "../threadChanger/threadChanger";
 import "./forumView.css";
 
 export const ForumView = () => {
@@ -21,7 +19,6 @@ export const ForumView = () => {
     }, [dispatch]);
 
     const availableRawThreads = useSelector(state => state.rawDataReducer.availableThreads);
-    const currentRawThreadIndex = useSelector(state => state.rawDataReducer.currentIndex);
     const currentRawThread = useSelector(state => state.rawDataReducer.currentThread)
 
     useEffect(() => {
@@ -69,17 +66,12 @@ export const ForumView = () => {
 
     useEffect(() => {
         if (!_.isEmpty(availableRawThreads)) {
-            dispatch(updateCurrentRawThread(availableRawThreads[currentRawThreadIndex]));
+            dispatch(updateCurrentRawThread(availableRawThreads[0]));
         }
-    }, [availableRawThreads, currentRawThreadIndex, dispatch]);
+    }, [availableRawThreads, dispatch]);
 
     return (
         <div className="forum-view">
-            <ThreadChanger
-                currentIndex={currentRawThreadIndex}
-                updateIndex={(index) => dispatch(updateCurrentRawThreadIndex(index))}
-                maxIndex={availableRawThreads.length - 1}
-            />
             <Thread />
         </div>
     );

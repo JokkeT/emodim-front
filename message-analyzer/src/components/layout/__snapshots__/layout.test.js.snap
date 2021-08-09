@@ -51,43 +51,6 @@ exports[`Layout renders correctly with username 1`] = `
     <div
       class="forum-view"
     >
-      <div
-        class="thread-changer"
-      >
-        <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text"
-          tabindex="0"
-          type="button"
-        >
-          <span
-            class="MuiButton-label"
-          >
-            Prev
-          </span>
-          <span
-            class="MuiTouchRipple-root"
-          />
-        </button>
-        <div
-          class="current-thread-label"
-        >
-          1
-        </div>
-        <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text"
-          tabindex="0"
-          type="button"
-        >
-          <span
-            class="MuiButton-label"
-          >
-            Next
-          </span>
-          <span
-            class="MuiTouchRipple-root"
-          />
-        </button>
-      </div>
       Thread
     </div>
   </div>

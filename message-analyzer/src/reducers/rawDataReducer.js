@@ -3,7 +3,6 @@ import _ from "lodash";
 import {
     UPDATE_RAW_THREAD_DATA,
     UPDATE_CURRENT_RAW_THREAD,
-    UPDATE_CURRENT_RAW_THREAD_INDEX
 } from "../actions/rawDataActions";
 
 const initialState = {
@@ -43,11 +42,6 @@ const rawDataReducer = (state = initialState, action) => {
                     comments: _.drop(comments, 1),
                     metadata: threadMetadata
                 }
-            };
-        case UPDATE_CURRENT_RAW_THREAD_INDEX:
-            return {
-                ...state,
-                currentIndex: action.payload
             };
         default:
             return state;
