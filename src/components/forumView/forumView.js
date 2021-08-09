@@ -25,8 +25,7 @@ export const ForumView = () => {
         if (currentRawThread && currentRawThread.comments) {
             const [comments, responses] = separateResponsesFromComments(currentRawThread.comments)
             const commentsWithResponses = moveResponsesToTheirParents(comments, responses);
-            const reverseOrderedComments = _.reverse(commentsWithResponses); // newest comments are shown first
-            currentRawThread.comments = reverseOrderedComments;
+            currentRawThread.comments = commentsWithResponses;
             dispatch(updateCurrentThread(currentRawThread));
         }
     }, [currentRawThread, dispatch]);

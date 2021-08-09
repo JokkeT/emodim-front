@@ -26,8 +26,8 @@ const threadReducer = (state = initialState, action) => {
                 thread: {
                     ...state.thread,
                     comments: [
-                        action.payload,
-                        ...state.thread.comments
+                        ...state.thread.comments,
+                        action.payload
                     ]
                 }
             }
