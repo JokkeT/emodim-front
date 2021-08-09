@@ -19,6 +19,7 @@ const AnnotatedMessage = ({ data, wordLevelAnnotations, messageLevelAnnotations,
         positive: 0
     }
 
+    // Constructs an array of AnnotatedWords based on wordData to be rendered
     const message = _.map(words, (wordData, index) => {
         return <AnnotatedWord
             key={index}
@@ -27,6 +28,10 @@ const AnnotatedMessage = ({ data, wordLevelAnnotations, messageLevelAnnotations,
         />
     });
 
+    // predictionArray has three floating point numbers, each representing
+    // the certainty of the sentence belonging to that category
+    // this function finds the index of the highest value
+    // Example predictionArray: [0.2, 0.3, 0.5]
     const findHighestPredictionIndex = predictionArray => {
 
         let highestPrediction = 0;
@@ -42,6 +47,8 @@ const AnnotatedMessage = ({ data, wordLevelAnnotations, messageLevelAnnotations,
         return indexOfHighestPrediction;
     }
 
+    // increases the correct counter to keep track of how many sentences
+    // have been found for each valence category
     const increaseValenceCounters = (index) => {
         if (index === 0) {
             sentenceValences.negative++;
@@ -52,6 +59,8 @@ const AnnotatedMessage = ({ data, wordLevelAnnotations, messageLevelAnnotations,
         }
     }
 
+    // Goes through the prediction data of all of the sentences in a message and
+    // increases the correct valence counter for each.
     const interpretValencePredictionData = () => {
         if (data.sentenceValencePredictions) {
             const messagePredictions = data.sentenceValencePredictions;
@@ -62,14 +71,18 @@ const AnnotatedMessage = ({ data, wordLevelAnnotations, messageLevelAnnotations,
         }
     }
 
+    // sets analysisMessage and messageValence to their correct values so they
+    // can be easily used in rendering
     const setFeedback = () => {
         messageValence = sentenceValences.positive - sentenceValences.negative;
         if (messageValence < 0) {
             analysisMessage = feedback.negative;
+            messageValence = -1
         } else if (messageValence === 0) {
             analysisMessage = feedback.neutral;
         } else if (messageValence > 0) {
             analysisMessage = feedback.positive;
+            messageValence = 1
         }
     }
 
