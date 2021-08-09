@@ -1,5 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import {
+    Switch,
+    Redirect,
+    Route
+} from "react-router-dom";
 import "./thread.css";
 import MessageArea from "../messageArea/messageArea";
 export class Thread extends Component {
@@ -17,7 +22,38 @@ export class Thread extends Component {
                 <div className="title">
                     {this.getCurrentThreadTitle()}
                 </div>
-                <MessageArea />
+                <Switch>
+                    <Route path="/1">
+                        <MessageArea feedbackHighlighting={false} messageHighlighting={false} messageAnnotations={false} />
+                    </Route>
+                    <Route path="/2">
+                        <MessageArea feedbackHighlighting={false} messageHighlighting={false} messageAnnotations={true} />
+                    </Route>
+
+                    <Route path="/3">
+                        <MessageArea feedbackHighlighting={false} messageHighlighting={true} messageAnnotations={false} />
+                    </Route>
+                    <Route path="/4">
+                        <MessageArea feedbackHighlighting={false} messageHighlighting={true} messageAnnotations={true} />
+                    </Route>
+
+                    <Route path="/5">
+                        <MessageArea feedbackHighlighting={true} messageHighlighting={false} messageAnnotations={false} />
+                    </Route>
+                    <Route path="/6">
+                        <MessageArea feedbackHighlighting={true} messageHighlighting={false} messageAnnotations={true} />
+                    </Route>
+
+                    <Route path="/7">
+                        <MessageArea feedbackHighlighting={true} messageHighlighting={true} messageAnnotations={false} />
+                    </Route>
+                    <Route path="/8">
+                        <MessageArea feedbackHighlighting={true} messageHighlighting={true} messageAnnotations={true} />
+                    </Route>
+                    <Route path="/">
+                        <Redirect to="/1" />
+                    </Route>
+                </Switch>
             </div>
         );
     }

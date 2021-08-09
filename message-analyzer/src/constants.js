@@ -6,3 +6,7 @@ export const messageFeedbackStrings = {
     neutral: "Viestin tunnesisältö on neutraali.",
     positive: "Tästä viestistä on tunnistettu positiivisia tunteita."
 }
+export const feedbackTitles = {
+    regular: "Tarkista viestisi kieliasu",
+    annotated: "Tarkista viestisi tunnesisältö"
+}

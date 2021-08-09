@@ -1,7 +1,7 @@
 import React from "react";
 import "./annotatedWord.css";
 
-const AnnotatedWord = ({ wordData, annotations }) => {
+const AnnotatedWord = ({ wordData, highlights }) => {
 
     let renderedWord = null;
     const { arousal, valence } = wordData;
@@ -10,7 +10,7 @@ const AnnotatedWord = ({ wordData, annotations }) => {
     let wordTooltip = null;
 
 
-    if (annotations) {
+    if (highlights) {
         if (valence < -0.75) {
             valenceClass = -2;
         } else if (valence < -0.5) {

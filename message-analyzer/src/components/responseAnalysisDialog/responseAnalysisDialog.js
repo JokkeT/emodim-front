@@ -15,7 +15,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 import ResponseAnalysis from "../responseAnalysis/responseAnalysis";
-import { chatEndpoint } from "../../constants";
+import {
+    chatEndpoint,
+    feedbackTitles as titles
+} from "../../constants";
 import {
     sendMessageForAnalysis,
     updateMessageText
@@ -23,7 +26,7 @@ import {
 import { addMessageToCurrentThread } from "../../actions/threadActions";
 import "./responseAnalysisDialog.css"
 
-const ResponseAnalysisDialog = () => {
+const ResponseAnalysisDialog = ({ annotations }) => {
     const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
     const socketRef = useRef(null);
@@ -125,7 +128,9 @@ const ResponseAnalysisDialog = () => {
 
             <Dialog onClose={handleClose} open={open}>
                 <MuiDialogTitle disableTypography >
-                    <Typography variant="h6">Response Analysis</Typography>
+                    <Typography variant="h6">
+                        {annotations ? titles.annotated : titles.regular}
+                    </Typography>
                     <IconButton aria-label="close" onClick={handleClose}>
                         <CloseIcon />
                     </IconButton>
@@ -134,7 +139,11 @@ const ResponseAnalysisDialog = () => {
                 <MuiDialogContent dividers>
                     {isWaitingForAnalysis
                         ? <FontAwesomeIcon icon={faCircleNotch} className="loading-icon" />
-                        : <ResponseAnalysis analysisResults={formWordArrayFromAnalyzedData(analysisResults)} />}
+                        : <ResponseAnalysis
+                            analysisResults={formWordArrayFromAnalyzedData(analysisResults)}
+                            annotations={annotations}
+                        />
+                    }
                 </MuiDialogContent>
 
                 <MuiDialogActions>

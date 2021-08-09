@@ -56,11 +56,6 @@ test("MessageArea renders correctly with props", () => {
     expect(container).toMatchSnapshot();
 });
 
-test("MessageArea renders correctly without props", () => {
-    const { container } = render(<MessageArea />);
-    expect(container).toMatchSnapshot();
-});
-
 test("MessageArea renders correctly with nested comments", () => {
     const comments = [
         {

@@ -3,5 +3,4 @@ COPY ["package.json", "package-lock.json", "./"]
 WORKDIR /app
 RUN npm install --production
 COPY . .
-# CMD ["npm", "start"]
-CMD ["npm", "run", "start-ann-docker"]
+CMD ["npm", "start"]

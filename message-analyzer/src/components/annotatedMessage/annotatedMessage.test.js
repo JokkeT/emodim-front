@@ -23,11 +23,3 @@ test("Message renders correctly with props", () => {
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
 });
-
-test("Message renders correctly without props", () => {
-    const component = renderer.create(
-        <Message />,
-    );
-    let tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
-});

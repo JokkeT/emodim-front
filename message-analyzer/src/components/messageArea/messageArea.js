@@ -2,11 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import "./messageArea.css";
-import Message from "../message/message";
 import AnnotatedMessage from "../annotatedMessage/annotatedMessage";
 import ResponseField from "../responseField/responseField";
 import ResponseAnalysisDialog from "../responseAnalysisDialog/responseAnalysisDialog";
-import { annotations } from "../../constants";
 
 export class MessageArea extends Component {
 
@@ -17,43 +15,35 @@ export class MessageArea extends Component {
                     {
                         this.props.startMessage.commentMetadata
                             ?
-                            annotations
-                                ?
-                                <AnnotatedMessage
-                                    data={this.props.startMessage}
-                                />
-                                :
-                                <Message
-                                    data={this.props.startMessage}
-                                />
+                            <AnnotatedMessage
+                                data={this.props.startMessage}
+                                wordLevelAnnotations={this.props.messageHighlighting}
+                                messageLevelAnnotations={this.props.messageAnnotations}
+                            />
                             :
                             null
                     }
                 </div>
-                <div className="response-section">
-                    <ResponseField />
-                    <ResponseAnalysisDialog />
-                </div>
+
                 <div className="comments">
                     {
                         this.props.comments && this.props.comments.map(comment => {
                             if (comment && comment.commentMetadata) {
-                                if (annotations) {
-                                    return <AnnotatedMessage
-                                        data={comment}
-                                        key={comment.commentMetadata.id}
-                                    />
-                                } else {
-                                    return < Message
-                                        data={comment}
-                                        key={comment.commentMetadata.id}
-                                    />
-                                }
+                                return <AnnotatedMessage
+                                    data={comment}
+                                    key={comment.commentMetadata.id}
+                                    wordLevelAnnotations={this.props.messageHighlighting}
+                                    messageLevelAnnotations={this.props.messageAnnotations}
+                                />
                             } else {
                                 return null;
                             }
                         })
                     }
+                </div>
+                <div className="response-section">
+                    <ResponseField />
+                    <ResponseAnalysisDialog annotations={this.props.feedbackHighlighting} />
                 </div>
             </div>
         );

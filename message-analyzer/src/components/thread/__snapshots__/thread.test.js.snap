@@ -17,6 +17,9 @@ exports[`Thread renders correctly 1`] = `
         class="thread-start"
       />
       <div
+        class="comments"
+      />
+      <div
         class="response-section"
       >
         <div
@@ -48,9 +51,6 @@ exports[`Thread renders correctly 1`] = `
           </button>
         </div>
       </div>
-      <div
-        class="comments"
-      />
     </div>
   </div>
 </div>

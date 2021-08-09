@@ -1,5 +1,8 @@
 import React from "react";
 import { render } from "../../test-utils";
+import {
+    MemoryRouter as Router
+} from "react-router-dom";
 
 import { Thread } from "./thread";
 import threadData from "../../testData/threadData_s24_03.json";
@@ -21,13 +24,15 @@ test("Thread renders correctly", () => {
     ];
 
     const { container } = render(
-        <Thread
-            updateCurrentRawThread={mockupdateCurrentRawThread}
-            updateAvailableRawThreads={mockupdateAvailableRawThreads}
-            currentThread={threadData[0]}
-            availableRawThreads={mockAvailableRawThreads}
-            currentRawThreadIndex={0}
-        />
+        <Router initialEntries={["/1"]}>
+            <Thread
+                updateCurrentRawThread={mockupdateCurrentRawThread}
+                updateAvailableRawThreads={mockupdateAvailableRawThreads}
+                currentThread={threadData[0]}
+                availableRawThreads={mockAvailableRawThreads}
+                currentRawThreadIndex={0}
+            />
+        </Router>
     );
 
     expect(container).toMatchSnapshot();

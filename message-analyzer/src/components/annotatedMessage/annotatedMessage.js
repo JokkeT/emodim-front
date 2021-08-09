@@ -6,7 +6,7 @@ import "./annotatedMessage.css";
 
 import { messageFeedbackStrings as feedback } from "../../constants";
 
-const AnnotatedMessage = ({ data, response }) => {
+const AnnotatedMessage = ({ data, wordLevelAnnotations, messageLevelAnnotations, response }) => {
 
     const { author, datetime } = data.commentMetadata;
     const words = data.words;
@@ -20,7 +20,11 @@ const AnnotatedMessage = ({ data, response }) => {
     }
 
     const message = _.map(words, (wordData, index) => {
-        return <AnnotatedWord key={index} wordData={wordData} annotations />
+        return <AnnotatedWord
+            key={index}
+            wordData={wordData}
+            highlights={wordLevelAnnotations}
+        />
     });
 
     const findHighestPredictionIndex = predictionArray => {
@@ -86,16 +90,22 @@ const AnnotatedMessage = ({ data, response }) => {
                     {datetime}
                 </div>
             </div>
-            <div className={`analysis-message message-valence${messageValence}`}>
-                {analysisMessage}
-            </div>
+            {
+                messageLevelAnnotations &&
+                <div className={`analysis-message message-valence${messageValence}`}>
+                    {analysisMessage}
+                </div>
+            }
             <div className="content">
                 <div className="message" key={data.commentMetadata.id}>
                     {message}
                 </div>
-                <EmojiAnnotation
-                    messageValence={messageValence}
-                />
+                {
+                    messageLevelAnnotations &&
+                    <EmojiAnnotation
+                        messageValence={messageValence}
+                    />
+                }
             </div>
             {
                 hasChildren && data.children.map(child => {

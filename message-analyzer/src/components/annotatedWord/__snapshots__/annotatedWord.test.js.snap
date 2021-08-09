@@ -3,7 +3,7 @@
 exports[`AnnotatedWord renders correctly with high arousal 1`] = `
 <div>
   <span
-    class="word arousal2 valence0"
+    class="word arousal0 valence0"
   >
     test
   </span>
@@ -24,8 +24,7 @@ exports[`AnnotatedWord renders correctly with line end word 1`] = `
 exports[`AnnotatedWord renders correctly with negative valence 1`] = `
 <div>
   <span
-    class="word arousal0 valence-2"
-    title="Tästä sanasta tunnistettiin vahvoja tunteita."
+    class="word arousal0 valence0"
   >
     test
   </span>
@@ -55,8 +54,7 @@ exports[`AnnotatedWord renders correctly with non-neutral rating without annotat
 exports[`AnnotatedWord renders correctly with positive valence 1`] = `
 <div>
   <span
-    class="word arousal0 valence2"
-    title="Tästä sanasta tunnistettiin vahvoja tunteita."
+    class="word arousal0 valence0"
   >
     test
   </span>
