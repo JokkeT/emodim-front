@@ -10,3 +10,14 @@ export const feedbackTitles = {
     regular: "Tarkista viestisi kieliasu",
     annotated: "Tarkista viestisi tunnesisältö"
 }
+export const userSelectionStrings = {
+    primaryInstruction: "Valitse käyttäjänimi",
+    helperText: "Sinun on valittava ensin käyttäjänimi."
+}
+export const buttonTexts = {
+    ready: "Valmis",
+    reply: "Vastaa",
+    send: "Lähetä",
+    cancel: "Peruuta"
+}
+export const responseFieldPlaceHolder = "Kirjoita vastaus..."

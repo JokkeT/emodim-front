@@ -17,7 +17,8 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import ResponseAnalysis from "../responseAnalysis/responseAnalysis";
 import {
     chatEndpoint,
-    feedbackTitles as titles
+    feedbackTitles as titles,
+    buttonTexts
 } from "../../constants";
 import {
     sendMessageForAnalysis,
@@ -123,7 +124,7 @@ const ResponseAnalysisDialog = ({ annotations }) => {
     return (
         <div className="analysis-report">
             <Button onClick={handleReplyClick}>
-                Reply
+                {buttonTexts.reply}
             </Button>
 
             <Dialog onClose={handleClose} open={open}>
@@ -148,10 +149,10 @@ const ResponseAnalysisDialog = ({ annotations }) => {
 
                 <MuiDialogActions>
                     <Button autoFocus onClick={handleClose} color="secondary">
-                        Cancel
+                        {buttonTexts.cancel}
                     </Button>
                     <Button autoFocus onClick={handleSend} color="primary" disabled={isWaitingForAnalysis}>
-                        Send
+                        {buttonTexts.send}
                     </Button>
                 </MuiDialogActions>
             </Dialog>

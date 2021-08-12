@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateUsername } from "../../actions/userActions";
 import { Button, TextField } from "@material-ui/core";
+import { userSelectionStrings, buttonTexts } from "../../constants";
 import "./userSelection.css"
 
 const UserSelection = () => {
@@ -14,7 +15,7 @@ const UserSelection = () => {
         if (username) {
             dispatch(updateUsername(username));
         } else {
-            setHelperText("You need to choose a nickname.");
+            setHelperText(userSelectionStrings.helperText);
         }
     }
 
@@ -24,18 +25,16 @@ const UserSelection = () => {
 
     return (
         <div className="user-selection">
-            Select a nickname
+            {userSelectionStrings.primaryInstruction}
             <TextField
                 value={inputValue}
                 onChange={handleChange}
-                // variant="outlined"
                 helperText={helperText}
-            // TODO: THIS NEEDS TO WORK WITH ENTER KEY!
             />
             <Button
                 onClick={() => handleClick(inputValue)}
             >
-                Ready
+                {buttonTexts.ready}
             </Button>
         </div>
     )

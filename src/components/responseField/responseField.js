@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateMessageText } from "../../actions/responseActions";
+import { responseFieldPlaceHolder } from "../../constants";
 import "./responseField.css";
 
 const ResponseField = () => {
@@ -17,7 +18,7 @@ const ResponseField = () => {
             <textarea
                 type="text"
                 className="response-text-input"
-                placeholder="Write an answer..."
+                placeholder={responseFieldPlaceHolder}
                 maxLength={500}
                 onChange={(event) => handleChange(event)}
                 value={responseText}
