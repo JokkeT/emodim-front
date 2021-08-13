@@ -66,9 +66,5 @@ div .loading-icon {
 }
 
 .MuiDialogActions-root .MuiButton-textPrimary {
-    background-color: #0099ff;
-}
-
-.MuiDialogActions-root .MuiButton-textSecondary {
-    border: 2px solid #0099ff;
+    background-color: #404040;
 }

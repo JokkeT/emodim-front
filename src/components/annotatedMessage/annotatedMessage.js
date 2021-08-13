@@ -8,7 +8,7 @@ import { messageFeedbackStrings as feedback } from "../../constants";
 
 const AnnotatedMessage = ({ data, wordLevelAnnotations, messageLevelAnnotations, response }) => {
 
-    const { author, datetime } = data.commentMetadata;
+    const { author } = data.commentMetadata;
     const words = data.words;
     const hasChildren = data.children && !_.isEmpty(data.children);
     let analysisMessage = null;
@@ -98,9 +98,6 @@ const AnnotatedMessage = ({ data, wordLevelAnnotations, messageLevelAnnotations,
             <div className="metadata">
                 <div className="author">
                     {author}
-                </div>
-                <div className="date">
-                    {datetime}
                 </div>
             </div>
             {

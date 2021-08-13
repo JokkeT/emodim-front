@@ -17,7 +17,6 @@
     background-color: #404040;
     margin-bottom: 10px;
     padding: 5px;
-    border-bottom: 2px #0099ff solid;
     border-radius: 10px 10px 0 0;
 }
 
@@ -28,6 +27,4 @@
 
 .response {
     background-color: #303030;
-    border-left: solid 1px #0099ff;
-    border-bottom: solid 1px #0099ff;
 }
