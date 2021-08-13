@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import Message from "./annotatedMessage";
+import AnnotatedMessage from "./annotatedMessage";
 
 test("Message renders correctly with props", () => {
     const data = {
@@ -18,7 +18,7 @@ test("Message renders correctly with props", () => {
         ]
     };
     const component = renderer.create(
-        <Message data={data} />,
+        <AnnotatedMessage data={data} />,
     );
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
