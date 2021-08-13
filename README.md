@@ -1,70 +1,101 @@
-# Getting Started with Create React App
+# Message Analyzer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Message Analyzer is a React app created for the Emodim project. It is supposed to be used together with multiple backend components found in [this repository](https://github.com/aaposyvanen/emodim).
 
-## Available Scripts
+The app shows a message thread with different kinds of annotations for the emotional content in messages sent with the app. When the server is running the app can be accessed at [localhost:3000](http://localhost:3000).
 
-In the project directory, you can run:
+## Annotation options
 
-### `npm start`
+There are three different kinds of annotations:
+- message-level analysis for messages in thread
+- word highlighting for messages in thread
+- word highlighting in reply intervention
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Each can be turned on or off separately from the others. The three options allow 8 different combinations of annotations shown, as shown in the table below.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+|#| Reply Highlights|Thread Highlights|Message-level analysis|
+|---|---|---|---|
+|1|0|0|0|
+|2|0|0|1|
+|3|0|1|0|
+|4|0|1|1|
+|5|1|0|0|
+|6|1|0|1|
+|7|1|1|0|
+|8|1|1|1|
 
-### `npm test`
+ To control which annotations are shown navigate to a different path on the page, according to the first column in the table. For example, to show no annoatations navigate to [localhost:3000/1](http://localhost:3000/1). To show all annotations, instead go to [localhost:3000/8](http://localhost:3000/8). If no specific path is specified, the app will reroute to /1.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+ ## Good to know
 
-### `npm run build`
+ The first thing the app will ask a user to do is to choose a nickname. Nicknames aren't checked or controlled in anyway, having multiple users with the same nickname is entirely possible and should always be accounted for.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+ After choosing a nickname the app connects to a chat server running on the same domain. All Message Analyzer clients connected to the same chat server will receive all messages sent from the other clients.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+ Clients do not know about the annotation settings of other clients and they will not affect each other in any way. All messages that go through the chat server will always be enriched with analysis data before being sent back to everyone (even the sender, because the sender also needs the analysis data). The client only uses the annotation settings to determine if it should show something extra according to the data that is always there, nothing else.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+ Refreshing the page will lose all data from the app, meaning both the chosen nickname and all messages sent or received. Only the chat server keeps permanent logs of all messages sent.
 
-### `npm run eject`
+## Using with Docker
+### 1. Build a Docker image
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The docker image is built with this command:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    docker build -t front .
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+The last parameter (.) is the path to the Dockerfile in this folder, navigate to this folder or adjust the parameter accordingly before running the command.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+The build process will likely take a few minutes.
 
-## Learn More
+### 2. Make sure the required Docker network exists
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Docker networks are used to allow the isolated containers to talk to each other. This system is designed to work as part of a bridge network. More info about Docker networks can be found [here](https://docs.docker.com/network/)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+A network can be created with the following command:
 
-### Code Splitting
+    docker network create emodim
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+The last parameter is just a name and it can be anything, it just needs to be the same name while creating and connecting to the network. In all examples the network name will be emodim, named after the research group this system was implemented for.
 
-### Analyzing the Bundle Size
+Docker remembers the networks created even after restarts, so the network only needs to be set up once in the environment running Docker. You can check if your network already exists like this:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    docker network ls
 
-### Making a Progressive Web App
+If your network exists, you can inspect it for details, such as a list of all containers connected to it like this:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+    docker network inspect emodim
 
-### Advanced Configuration
+If you want to remove your network, use this command:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+    docker network rm emodim
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### 3. Run the image in a container:
 
-### `npm run build` fails to minify
+Running the image is done with this command:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    docker run -dit -p 3000:3000 --rm --network emodim --name front front
+
+If you want to see the console output from the server, attach to the server like this:
+
+    docker attach front
+
+You can detach from the server with CTRL + p, CTRL + q. CTRL + z will close the whole container.
+
+## Using without docker
+
+To run the server without docker you need to have [node](https://nodejs.org/en/) installed. Using the latest LTS version is recommended.
+
+1. Install dependencies
+
+        npm install
+
+2. Run the server
+
+        npm start
+
+## Redux-logger
+
+This app uses [redux](https://redux.js.org/) to handle state and [redux-logger](https://github.com/LogRocket/redux-logger) to log state changes in the browser devtools console. Redux-logger can be used most effectively by installing the Redux DevTools browser extension (available for at least Chrome and Firefox).
+
+After installing the extension there is a Redux tab available in the browser's devtools if the current website uses Redux and allows it. This allows reviewing and replaying any state changes that occurred during the use of the app. Most importantly, all of this data can be exported and imported for later analysis.
